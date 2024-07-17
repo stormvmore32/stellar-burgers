@@ -34,7 +34,6 @@ export const feedsSlice = createSlice({
       state.orders = action.payload.orders;
       state.total = action.payload.total;
       state.totalToday = action.payload.totalToday;
-      console.log(action.payload);
     });
     builder.addCase(getFeeds.rejected, (state) => {
       state.status = RequestStatus.Failed;
