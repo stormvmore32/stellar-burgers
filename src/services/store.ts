@@ -4,18 +4,20 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { ingredientsSlice } from './ingredientsSlice';
-import { burgerConstructorSlice } from './burgerConsructorSlice';
-import { userSlice } from './userSlice';
-import { feedsSlice } from './feedSlice';
-import { orderSlice } from './orderSlice';
+import { ingredientsSlice } from './slices/ingredientsSlice';
+import { burgerConstructorSlice } from '@slices/burgerConsructorSlice';
+import { userSlice } from './slices/userSlice';
+import { feedsSlice } from './slices/feedSlice';
+import { orderSlice } from './slices/orderSlice';
+import { ordersSlice } from '@slices/ordersSlice';
 
 const rootReducer = {
   [ingredientsSlice.name]: ingredientsSlice.reducer,
   [burgerConstructorSlice.name]: burgerConstructorSlice.reducer,
   [userSlice.name]: userSlice.reducer,
   [feedsSlice.name]: feedsSlice.reducer,
-  [orderSlice.name]: orderSlice.reducer
+  [orderSlice.name]: orderSlice.reducer,
+  [ordersSlice.name]: orderSlice.reducer
 };
 
 export const store = configureStore({

@@ -1,4 +1,4 @@
-import { TConstructorIngredient } from './../utils/types';
+import { TConstructorIngredient } from '@utils-types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { v4 as uuid } from 'uuid';

@@ -9,7 +9,7 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RequestStatus, TUser } from '@utils-types';
-import { setCookie } from '../utils/cookie';
+import { setCookie } from '../../utils/cookie';
 
 export interface TUserState {
   isAuthChecked: boolean;
@@ -33,7 +33,7 @@ export const registerUser = createAsyncThunk<TAuthResponse, TRegisterData>(
   async (dataUser) => {
     const data = await registerUserApi(dataUser);
     setCookie('accessToken', data.accessToken);
-    setCookie('refreshToken', data.refreshToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
     return data;
   }
 );
@@ -43,7 +43,7 @@ export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
   async (dataUser) => {
     const data = await loginUserApi(dataUser);
     setCookie('accessToken', data.accessToken);
-    setCookie('refreshToken', data.refreshToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
     return data;
   }
 );

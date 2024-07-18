@@ -17,7 +17,7 @@ const initialState: TFeedState = {
 };
 
 export const getFeeds = createAsyncThunk<TOrdersData>(
-  'orders/getOrders',
+  'feeds/getFeeds',
   getFeedsApi
 );
 

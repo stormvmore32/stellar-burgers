@@ -22,20 +22,19 @@ import {
 } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
 import { useEffect } from 'react';
-import { getIngredients } from '../../services/ingredientsSlice';
-import { checkUserAuth, authCheck } from '../../services/userSlice';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { checkUserAuth, authCheck } from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
-import { getOrderByNumber } from '../../services/orderSlice';
-import { orderBurgerApi } from '@api';
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location: Location<{ backgroundLocation: Location }> = useLocation();
-  const backgroundLocation = location.state?.backgroundLocation;
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
+
   // dispatch(getOrderByNumber(46004));
-  const burg = ['643d69a5c3f7b9001cfa093c', '643d69a5c3f7b9001cfa0943'];
-  orderBurgerApi(burg);
+  // const burg = ['643d69a5c3f7b9001cfa093c', '643d69a5c3f7b9001cfa0943'];
+  // orderBurgerApi(burg);
 
   const handleCloseModal = () => {
     navigate(-1);

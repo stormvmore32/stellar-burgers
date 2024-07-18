@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { selectorFeeds } from '../../services/feedSlice';
+import { selectorFeeds } from '../../services/slices/feedSlice';
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
 

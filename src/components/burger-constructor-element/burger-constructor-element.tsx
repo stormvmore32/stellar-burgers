@@ -1,10 +1,7 @@
 import { FC, memo } from 'react';
 import { BurgerConstructorElementUI } from '@ui';
 import { BurgerConstructorElementProps } from './type';
-import {
-  removeIngredient,
-  changeRecipe
-} from '../../services/burgerConsructorSlice';
+import { removeIngredient, changeRecipe } from '@slices/burgerConsructorSlice';
 import { useDispatch } from 'react-redux';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(

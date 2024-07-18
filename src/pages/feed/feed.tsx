@@ -3,7 +3,7 @@ import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFeeds, selectorFeeds } from '../../services/feedSlice';
+import { getFeeds, selectorFeeds } from '../../services/slices/feedSlice';
 import { useDispatch } from '../../services/store';
 
 export const Feed: FC = () => {
@@ -19,7 +19,7 @@ export const Feed: FC = () => {
 
   useEffect(() => {
     handleGetFeeds();
-  }, []);
+  }, [dispatch]);
 
   if (!orders.length) {
     return <Preloader />;
