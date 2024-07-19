@@ -32,10 +32,6 @@ const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
 
-  // dispatch(getOrderByNumber(46004));
-  // const burg = ['643d69a5c3f7b9001cfa093c', '643d69a5c3f7b9001cfa0943'];
-  // orderBurgerApi(burg);
-
   const handleCloseModal = () => {
     navigate(-1);
   };
@@ -59,6 +55,22 @@ const App = () => {
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route
+          path='/feed/:number'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
         <Route path='/feed' element={<Feed />} />
         <Route
           path='/login'
@@ -127,6 +139,16 @@ const App = () => {
               <Modal title={'Ингридиенты'} onClose={handleCloseModal}>
                 <IngredientDetails />
               </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal title={'Заказ'} onClose={handleCloseModal}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
             }
           />
         </Routes>

@@ -1,15 +1,17 @@
 import {
   getUserApi,
   loginUserApi,
+  logoutApi,
   registerUserApi,
   TAuthResponse,
   TLoginData,
   TRegisterData,
-  TUserResponse
+  TUserResponse,
+  updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RequestStatus, TUser } from '@utils-types';
-import { setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export interface TUserState {
   isAuthChecked: boolean;
@@ -48,12 +50,30 @@ export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  'userSlice/logout',
+  (_, { dispatch }) => {
+    logoutApi()
+      .then(() => {
+        localStorage.clear();
+        deleteCookie('accessToken');
+        dispatch(logout());
+      })
+      .catch(() => {
+        console.log('Failed');
+      });
+  }
+);
+
 export const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
     authCheck: (state) => {
       state.isAuthChecked = true;
+    },
+    logout: (state) => {
+      state.data = null;
     }
   },
   extraReducers: (builder) => {
@@ -96,4 +116,4 @@ export const userSlice = createSlice({
 });
 
 export const userSelectors = userSlice.selectors;
-export const { authCheck } = userSlice.actions;
+export const { authCheck, logout } = userSlice.actions;

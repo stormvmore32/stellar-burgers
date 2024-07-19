@@ -4,12 +4,12 @@ import { RequestStatus, TIngredient } from '@utils-types';
 
 type TIngredientState = {
   data: TIngredient[];
-  status: RequestStatus;
+  status: boolean;
 };
 
 const initialState: TIngredientState = {
   data: [],
-  status: RequestStatus.Idle
+  status: false
 };
 
 export const getIngredients = createAsyncThunk<TIngredient[]>(
@@ -23,14 +23,14 @@ export const ingredientsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getIngredients.pending, (state) => {
-      state.status = RequestStatus.Loading;
+      state.status = false;
     });
     builder.addCase(getIngredients.fulfilled, (state, action) => {
-      state.status = RequestStatus.Success;
+      state.status = true;
       state.data = action.payload;
     });
     builder.addCase(getIngredients.rejected, (state) => {
-      state.status = RequestStatus.Failed;
+      state.status = false;
     });
   },
   selectors: {

@@ -17,7 +17,7 @@ const rootReducer = {
   [userSlice.name]: userSlice.reducer,
   [feedsSlice.name]: feedsSlice.reducer,
   [orderSlice.name]: orderSlice.reducer,
-  [ordersSlice.name]: orderSlice.reducer
+  [ordersSlice.name]: ordersSlice.reducer
 };
 
 export const store = configureStore({

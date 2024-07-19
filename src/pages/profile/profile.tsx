@@ -34,6 +34,7 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log('click');
   };
 
   const handleCancel = (e: SyntheticEvent) => {
