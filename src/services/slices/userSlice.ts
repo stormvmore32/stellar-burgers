@@ -50,6 +50,14 @@ export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
   }
 );
 
+export const updateUser = createAsyncThunk<TUserResponse, TUser>(
+  'userSlice/updateUser',
+  async (dataUser) => {
+    const data = await updateUserApi(dataUser);
+    return data;
+  }
+);
+
 export const logoutUser = createAsyncThunk(
   'userSlice/logout',
   (_, { dispatch }) => {
@@ -106,6 +114,16 @@ export const userSlice = createSlice({
         state.requestStatus = RequestStatus.Loading;
       })
       .addCase(loginUser.rejected, (state) => {
+        state.requestStatus = RequestStatus.Failed;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.requestStatus = RequestStatus.Loading;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.requestStatus = RequestStatus.Success;
+        state.data = action.payload.user;
+      })
+      .addCase(updateUser.rejected, (state) => {
         state.requestStatus = RequestStatus.Failed;
       });
   },
