@@ -52,10 +52,7 @@ export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
 
 export const updateUser = createAsyncThunk<TUserResponse, TUser>(
   'userSlice/updateUser',
-  async (dataUser) => {
-    const data = await updateUserApi(dataUser);
-    return data;
-  }
+  updateUserApi
 );
 
 export const logoutUser = createAsyncThunk(
