@@ -17,12 +17,14 @@ export interface TUserState {
   isAuthChecked: boolean;
   data: TUser | null;
   requestStatus: RequestStatus;
+  error?: Error | null;
 }
 
 const initialState: TUserState = {
   isAuthChecked: false,
   data: null,
-  requestStatus: RequestStatus.Idle
+  requestStatus: RequestStatus.Idle,
+  error: null
 };
 
 export const checkUserAuth = createAsyncThunk<TUserResponse>(
@@ -92,6 +94,7 @@ export const userSlice = createSlice({
       })
       .addCase(checkUserAuth.rejected, (state) => {
         state.requestStatus = RequestStatus.Failed;
+        state.error = new Error('Failed check auth user');
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.data = action.payload.user;
@@ -102,6 +105,7 @@ export const userSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state) => {
         state.requestStatus = RequestStatus.Failed;
+        state.error = new Error('Failed registration');
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = action.payload.user;
@@ -112,6 +116,7 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state) => {
         state.requestStatus = RequestStatus.Failed;
+        state.error = new Error('Failed login');
       })
       .addCase(updateUser.pending, (state) => {
         state.requestStatus = RequestStatus.Loading;
@@ -122,6 +127,7 @@ export const userSlice = createSlice({
       })
       .addCase(updateUser.rejected, (state) => {
         state.requestStatus = RequestStatus.Failed;
+        state.error = new Error('Failed update user');
       });
   },
   selectors: {
@@ -132,3 +138,4 @@ export const userSlice = createSlice({
 
 export const userSelectors = userSlice.selectors;
 export const { authCheck, logout } = userSlice.actions;
+export const userReducer = userSlice.reducer;

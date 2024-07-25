@@ -2,17 +2,19 @@ import { getIngredientsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RequestStatus, TIngredient } from '@utils-types';
 
-type TIngredientState = {
+export type TIngredientState = {
   data: TIngredient[];
-  status: boolean;
+  status: RequestStatus;
+  error?: Error | null;
 };
 
 const initialState: TIngredientState = {
   data: [],
-  status: false
+  status: RequestStatus.Idle,
+  error: null
 };
 
-export const getIngredients = createAsyncThunk<TIngredient[]>(
+export const getIngredients = createAsyncThunk(
   'ingredients/getIngredients',
   getIngredientsApi
 );
@@ -23,14 +25,15 @@ export const ingredientsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getIngredients.pending, (state) => {
-      state.status = false;
+      state.status = RequestStatus.Loading;
     });
     builder.addCase(getIngredients.fulfilled, (state, action) => {
-      state.status = true;
+      state.status = RequestStatus.Success;
       state.data = action.payload;
     });
     builder.addCase(getIngredients.rejected, (state) => {
-      state.status = false;
+      state.status = RequestStatus.Failed;
+      state.error = new Error('Loading data is failed');
     });
   },
   selectors: {
@@ -40,3 +43,4 @@ export const ingredientsSlice = createSlice({
 });
 
 export const selectorIngredients = ingredientsSlice.selectors;
+export const ingredientsReducer = ingredientsSlice.reducer;
