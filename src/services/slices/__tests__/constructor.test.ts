@@ -22,17 +22,17 @@ const mockData = [
     image_large: 'https://code.s3.yandex.net/react/code/meat-01-large.png'
   },
   {
-    _id: '643d69a5c3f7b9001cfa093e',
-    name: 'Филе Люминесцентного тетраодонтимформа',
-    type: 'main',
-    proteins: 44,
-    fat: 26,
-    carbohydrates: 85,
-    calories: 643,
-    price: 988,
-    image: 'https://code.s3.yandex.net/react/code/meat-03.png',
-    image_mobile: 'https://code.s3.yandex.net/react/code/meat-03-mobile.png',
-    image_large: 'https://code.s3.yandex.net/react/code/meat-03-large.png'
+    _id: '643d69a5c3f7b9001cfa093c',
+    name: 'Краторная булка N-200i',
+    type: 'bun',
+    proteins: 80,
+    fat: 24,
+    carbohydrates: 53,
+    calories: 420,
+    price: 1255,
+    image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+    image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+    image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
   },
   {
     _id: '643d69a5c3f7b9001cfa0942',
@@ -55,7 +55,7 @@ describe('test constructor slice', () => {
     ingredients: []
   };
 
-  it('test add ingredient func', () => {
+  it('should must add ingredient with type "main" or "sauce" when valid data is passed', () => {
     const newState = burgerReducer(initialState, addIngredient(mockData[0]));
     expect(newState.ingredients.length).toEqual(
       1 + initialState.ingredients.length
@@ -66,7 +66,15 @@ describe('test constructor slice', () => {
     });
   });
 
-  it('test remove ingredient func', () => {
+  it('should add ingredient with type "bun" when valid data is passed', () => {
+    const newState = burgerReducer(initialState, addIngredient(mockData[1]));
+    expect(newState.bun).toEqual({
+      ...mockData[1],
+      id: expect.any(String)
+    });
+  });
+
+  it('should remove item by id when valid data is passed', () => {
     const expectedResult = mockData.slice(0, 2);
     const newState = burgerReducer(
       { bun: null, ingredients: mockData },
@@ -79,21 +87,20 @@ describe('test constructor slice', () => {
     });
   });
 
-  it('test change recipe func', () => {
+  it('should change the order of components when the corresponding button is pressed', () => {
     const expectedResult = [
       {
-        _id: '643d69a5c3f7b9001cfa093e',
-        name: 'Филе Люминесцентного тетраодонтимформа',
-        type: 'main',
-        proteins: 44,
-        fat: 26,
-        carbohydrates: 85,
-        calories: 643,
-        price: 988,
-        image: 'https://code.s3.yandex.net/react/code/meat-03.png',
-        image_mobile:
-          'https://code.s3.yandex.net/react/code/meat-03-mobile.png',
-        image_large: 'https://code.s3.yandex.net/react/code/meat-03-large.png'
+        _id: '643d69a5c3f7b9001cfa093c',
+        name: 'Краторная булка N-200i',
+        type: 'bun',
+        proteins: 80,
+        fat: 24,
+        carbohydrates: 53,
+        calories: 420,
+        price: 1255,
+        image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+        image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+        image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
       },
       {
         _id: '643d69a5c3f7b9001cfa0941',
@@ -131,7 +138,7 @@ describe('test constructor slice', () => {
     expect(newState).toEqual({ bun: null, ingredients: expectedResult });
   });
 
-  it('test clear func', () => {
+  it('should clear the date "field" when the call', () => {
     const newState = burgerReducer(
       { bun: null, ingredients: mockData },
       clearConstructor()

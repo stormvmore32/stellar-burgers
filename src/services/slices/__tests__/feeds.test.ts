@@ -9,7 +9,7 @@ describe('test feeds slice', () => {
     status: RequestStatus.Idle,
     error: null
   };
-  it('when request is status - "pending" status = Loading, orders = [], total = 0, totalToday = 0', () => {
+  it('should set status = Loading, orders = [], total = 0, totalToday = 0 when getFeeds.pending', () => {
     const actualState = feedsReducer(
       {
         ...initialState
@@ -24,7 +24,7 @@ describe('test feeds slice', () => {
       error: null
     });
   });
-  it('when request is status - "reject" status = Failed, orders = [], total = 0, totalToday = 0', () => {
+  it('should set status = Failed, orders = [], total = 0, totalToday = 0 when getFeeds.rejected', () => {
     const actualState = feedsReducer(
       { ...initialState },
       getFeeds.rejected(new Error(), '')
@@ -39,7 +39,7 @@ describe('test feeds slice', () => {
     });
   });
 
-  it('when request is status - "fulfilled" status = Success, orders = TOrder[]', () => {
+  it('should set status = Success, orders = TOrder[] when getFeeds.fulfilled', () => {
     const testData = {
       orders: [
         {

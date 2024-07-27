@@ -45,13 +45,13 @@ const mockData = [
 
 describe('test rootReducer', () => {
   const initialState = store.getState();
-  it('calling incorrect action', () => {
+  it('should return the initial state when passing incorrect data', () => {
     store.dispatch({ type: 'UNKNOWN_ACTION' });
     const newState = store.getState();
     expect(initialState).toEqual(newState);
   });
 
-  it('calling correct action', () => {
+  it('should return an updated state when passing valid data', () => {
     store.dispatch(addIngredient(mockData[0]));
     expect(initialState).not.toEqual(store.getState());
   });

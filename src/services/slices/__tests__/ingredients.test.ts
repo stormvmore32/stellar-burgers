@@ -12,7 +12,7 @@ describe('test slice ingredients', () => {
     error: null
   };
 
-  it('when request is status - "pending" status = Loading, data = []', () => {
+  it('should set status = Loading, data = [] when getIngredients.pending', () => {
     const actualState = ingredientsReducer(
       { ...initialState },
       getIngredients.pending('')
@@ -25,7 +25,7 @@ describe('test slice ingredients', () => {
     });
   });
 
-  it('when request is status - "reject" status = Failed, data = [], error = error message', () => {
+  it('should set status = Failed, data = [], error = error message when getIngredients.rejected', () => {
     const actualState = ingredientsReducer(
       { ...initialState },
       getIngredients.rejected(new Error(), '')
@@ -38,7 +38,7 @@ describe('test slice ingredients', () => {
     });
   });
 
-  it('when request is status - "fulfilled" status = Success, data = TIngredientState[]', () => {
+  it('should set status = Success, data = TIngredientState[] when getIngredients.fulfilled', () => {
     const testData = [
       {
         _id: '1',

@@ -8,7 +8,7 @@ describe('test orders slice', () => {
     status: RequestStatus.Idle,
     error: null
   };
-  it('when request is status - "pending" status = Loading, orders = []', () => {
+  it('should set status = Loading, orders = [] when getOrders.pending', () => {
     const actualState = ordersReducer(
       {
         ...initialState
@@ -21,7 +21,7 @@ describe('test orders slice', () => {
       error: null
     });
   });
-  it('when request is status - "reject" status = Failed, orders = [], error = error mesage', () => {
+  it('should set status = Failed, orders = [], error = error message when getOrders.rejected', () => {
     const actualState = ordersReducer(
       { ...initialState },
       getOrders.rejected(new Error(), '')
@@ -34,7 +34,7 @@ describe('test orders slice', () => {
     });
   });
 
-  it('when request is status - "fulfilled" status = Success, orders = TOrder[]', () => {
+  it('should set status = Success, orders = TOrder[] when getOrders.fulfilled', () => {
     const testData = [
       {
         _id: '6696ebdd119d45001b4f9551',
