@@ -1,22 +1,86 @@
-beforeEach(() => {
-  cy.visit('/');
-  cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' }).as(
-    'getIngredients'
-  );
-});
-describe('test add ingredients for constructor', () => {
-  it('should add to ingredient from list to constructor', () => {
-    // cy.get(`[data-cy='643d69a5c3f7b9001cfa093e']`).click();
-    cy.contains('Добавить').click();
-    console.log(cy.get('button:contains("Добавить")'));
+describe('test add ingredient to constructor', () => {
+  beforeEach(() => {
+    cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
+    cy.visit('/');
   });
-  it('should open modal with ingredients on click card', () => {
-    cy.contains('Биокотлета из марсианской Магнолии').click();
+  it('should add bun to constructor', () => {
+    cy.get('[data-cy=bun-category]').contains('Добавить').click();
+    cy.get('[data-cy=bun-top').contains('Булка 1').should('exist');
+    cy.get('[data-cy=bun-bottom').contains('Булка 1').should('exist');
+  });
+
+  it('should add ingredient to constructor', () => {
+    cy.get('[data-cy=main-category]').contains('Добавить').click();
+    cy.get('[data-cy=sauce-category]').contains('Добавить').click();
+    cy.get('[data-cy=mains-category').contains('Начинка 1').should('exist');
+    cy.get('[data-cy=mains-category').contains('Соус 1').should('exist');
   });
 });
 
-// it('should add to ingredient from list to constructor', () => {
-//   cy.visit('/');
-//   const item = cy.get(`[data-cy=${'643d69a5c3f7b9001cfa093e'}]`);
-//   item.click();
-// });
+describe('test the modal operation', () => {
+  beforeEach(() => {
+    cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
+    cy.visit('/');
+  });
+
+  it('test open modal', () => {
+    cy.contains('Ингредиенты').should('not.exist');
+    cy.contains('Булка 1').click();
+    cy.contains('Ингредиенты').should('exist');
+    cy.get('#modals').contains('Булка 1').should('exist');
+  });
+
+  it('test close modal on click to button', () => {
+    cy.contains('Булка 1').click();
+    cy.contains('Ингредиенты').should('exist');
+    cy.get('#modals button[data-cy=close-button]').click();
+    cy.contains('Ингредиенты').should('not.exist');
+  });
+
+  it('test close modal on click to overlay', () => {
+    cy.contains('Булка 1').click();
+    cy.contains('Ингредиенты').should('exist');
+    cy.get('[data-cy=overlay]').click('left', { force: true });
+    cy.contains('Ингредиенты').should('not.exist');
+  });
+});
+
+describe('test post order', () => {
+  beforeEach(() => {
+    cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
+    cy.intercept('GET', 'api/auth/user', { fixture: 'user.json' });
+    cy.intercept('POST', 'api/orders', { fixture: 'post.json' }).as(
+      'postOrder'
+    );
+    window.localStorage.setItem('refreshToken', 'test-refreshToken');
+    cy.setCookie('accessToken', 'test-accessToken');
+    cy.visit('/');
+  });
+
+  afterEach(() => {
+    cy.clearLocalStorage();
+    cy.clearCookies();
+  });
+
+  it('should order work', () => {
+    cy.get('[data-cy=bun-category]').contains('Добавить').click();
+    cy.get('[data-cy=bun-top').contains('Булка 1').should('exist');
+    cy.get('[data-cy=bun-bottom').contains('Булка 1').should('exist');
+    cy.get('[data-cy=main-category]').contains('Добавить').click();
+    cy.get('[data-cy=sauce-category]').contains('Добавить').click();
+    cy.get('[data-cy=mains-category').contains('Начинка 1').should('exist');
+    cy.get('[data-cy=mains-category').contains('Соус 1').should('exist');
+    cy.contains('Оформить заказ').click();
+    cy.wait('@postOrder');
+
+    cy.contains('идентификатор заказа').should('exist');
+    cy.get('#modals').contains('123').should('exist');
+
+    cy.get('#modals button[data-cy=close-button]').click();
+    cy.contains('идентификатор заказа').should('not.exist');
+
+    cy.get('[data-cy=buns-category').contains('Булка 1').should('not.exist');
+    cy.get('[data-cy=mains-category').contains('Начинка 1').should('not.exist');
+    cy.get('[data-cy=mains-category').contains('Соус 1').should('not.exist');
+  });
+});
