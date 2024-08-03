@@ -11,8 +11,8 @@ export const orderInfoData = (number: string) => (state: RootState) => {
     if (data) return data;
   }
 
-  if (state.order.OrderByNumber?.number === +number) {
-    const data = state.order.OrderByNumber;
+  if (state.order.orderByNumber?.number === +number) {
+    const data = state.order.orderByNumber;
     if (data) return data;
   }
 

@@ -1,19 +1,23 @@
-import { getOrderByNumberApi, orderBurgerApi } from '@api';
+import { getorderByNumberApi, orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RequestStatus, TOrder } from '@utils-types';
+import { TOrder } from '@utils-types';
 
 export type TOrderState = {
   newOrderData: TOrder | null;
   newOrderStatus: boolean;
-  OrderByNumber: TOrder | null;
-  OrderByNumberStatus: boolean;
+  newOrderError?: Error | null;
+  orderByNumber: TOrder | null;
+  orderByNumberStatus: boolean;
+  orderByNumberError?: Error | null;
 };
 
 const initialState: TOrderState = {
   newOrderData: null,
   newOrderStatus: false,
-  OrderByNumber: null,
-  OrderByNumberStatus: false
+  newOrderError: null,
+  orderByNumber: null,
+  orderByNumberStatus: false,
+  orderByNumberError: null
 };
 
 export const postOrder = createAsyncThunk(
@@ -26,7 +30,7 @@ export const postOrder = createAsyncThunk(
 
 export const getOrderByNumber = createAsyncThunk(
   'order/getOrder',
-  getOrderByNumberApi
+  getorderByNumberApi
 );
 
 export const orderSlice = createSlice({
@@ -39,14 +43,15 @@ export const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getOrderByNumber.pending, (state) => {
-      state.OrderByNumberStatus = true;
+      state.orderByNumberStatus = true;
     });
     builder.addCase(getOrderByNumber.fulfilled, (state, action) => {
-      state.OrderByNumberStatus = false;
-      state.OrderByNumber = action.payload.orders[0];
+      state.orderByNumberStatus = false;
+      state.orderByNumber = action.payload.orders[0];
     });
     builder.addCase(getOrderByNumber.rejected, (state) => {
-      state.OrderByNumberStatus = false;
+      state.orderByNumberStatus = false;
+      state.orderByNumberError = new Error('Failed get order by number');
     });
     builder.addCase(postOrder.pending, (state) => {
       state.newOrderStatus = true;
@@ -57,14 +62,16 @@ export const orderSlice = createSlice({
     });
     builder.addCase(postOrder.rejected, (state) => {
       state.newOrderStatus = false;
+      state.newOrderError = new Error('Failed post order');
     });
   },
   selectors: {
     selectorNewOrderData: (state: TOrderState) => state.newOrderData,
     selectorNewOrderStatus: (state: TOrderState) => state.newOrderStatus,
-    selectorOrderByNum: (state: TOrderState) => state.OrderByNumber
+    selectorOrderByNum: (state: TOrderState) => state.orderByNumber
   }
 });
 
 export const { clearOrder } = orderSlice.actions;
 export const selectorsOrder = orderSlice.selectors;
+export const orderReducer = orderSlice.reducer;
